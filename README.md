@@ -12,7 +12,7 @@ The tool will perform a Google search and after that will test GET parameters lo
 `python blueslide.py --site .com --ext php --inurl ?id= 3`
 
 ## Looking for .com URLs with "price" parameter and the word "product" in the title (retrieving 2 Google result pages). ##
-`python blueslide.py --site .com --intitle products --inurl ?price= 2`
+`python blueslide.py --site .com --intitle product --inurl ?price= 2`
 
 
 It is recommended not to perform high number or searches in a short time to avoid Google's reCaptcha mechanism.
