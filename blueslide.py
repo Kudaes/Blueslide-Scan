@@ -5,7 +5,6 @@ from multiprocessing import Process,Pipe
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
-# flag para probar todos los parametros aunque ya se haya encontrado algo en uno anterior
 
 full = False
 num_page = 1
@@ -44,7 +43,7 @@ class ActiveScanThread(Process):
         peaceful = True
         for i in range(len(self.__types)):
             try:
-                if i == 1 or i == 2:
+                if (i == 1) or (i == 2):
           
                     crafted1 = self.url + self.__blindP[i-1] + self.remainder
                     raw1 = self.getRawHtml(crafted1)
@@ -61,7 +60,7 @@ class ActiveScanThread(Process):
 			    self.xssFound(crafted1)
                        
             
-		elif i == 3 or i == 4:
+		elif (i == 3) or (i == 4):
 		    
 		    original = self.url + self.remainder
 		    time1 = self.getElapsedTime(original)
