@@ -6,7 +6,7 @@
 
 # **Usage** #
 
-The tool will perform a Google search and after that will test GET parameters looking for error/time-based/blind-based SQL injection points.
+The tool will perform a Google search based on the dorks supplied and after that will test GET parameters looking for error/time-based/blind-based SQL injection points.
 
 ## Looking for PHP files belonging to the .com domain with "id" parameter in the URL  (retrieving 3 Google result pages) ##
 `python blueslide.py --site .com --ext php --inurl ?id= 3`
