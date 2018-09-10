@@ -15,7 +15,7 @@ The tool will perform a Google search based on the dorks supplied and after that
 `python blueslide.py --site .com --intitle product --inurl ?price= 2`
 
 
-It is recommended not to perform high number or searches in a short time to avoid Google's reCaptcha mechanism.
+It is recommended not to perform high number of searches in a short time to avoid Google's reCaptcha mechanism.
 
 
 # **Requirements** #
