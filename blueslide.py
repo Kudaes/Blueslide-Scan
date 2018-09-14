@@ -27,7 +27,7 @@ class ActiveScanThread(Process):
     __types = ['Error-Based','Blind-Str','Blind-Int','Stacked-Queries-Str','Stacked-Queries-Int']
     __blindP = ["' and 'ayHj'='ayHj"," and 'ayHj'='ayHj'"]
     __blind = ["' and 'ayHj'='bjIn"," and 'ayHj'='bjIn'"]
-    __blindD = ["ayHj=ayHj", "ayHj = ayHj","%27ayHj%27=%ayHj","and ayHj ayHj","andayHjayHj","and 'ayHj'='ayHj","and \'ayHj\'=\'ayHj","and \\'ayHj\\'=\\'ayHj","and ayHjayHj","&#039;ayHj&#039;=&#039;ayHj"]
+    __blindD = ["ayHj=ayHj", "ayHj = ayHj","%27ayHj%27=%ayHj","ayHj ayHj","ayHjayHj","'ayHj'='ayHj","'ayHj'='ayHj'","&#039;ayHj&#039;=&#039;ayHj"]
     __stackedInt = [";sleep(5)-- ",";WAITFOR DELAY '00:00:05'-- "]
     __stackedStr = ["';sleep(5)-- ","';WAITFOR DELAY '00:00:05'-- "]
     	
