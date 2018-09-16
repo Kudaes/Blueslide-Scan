@@ -8,11 +8,11 @@
 
 The tool will perform a Google search based on the dorks supplied and after that will test GET parameters looking for error/time-based/blind-based SQL injection points.
 
-## Looking for PHP files belonging to the .com domain with "id" parameter in the URL  (retrieving 3 Google result pages) ##
-`python blueslide.py --site .com --ext php --inurl ?id= 3`
+## Looking for PHP files belonging to mi.domain with "id" parameter in the URL  (retrieving 3 Google result pages) ##
+`python blueslide.py --site mi.domain --ext php --inurl ?id= 3`
 
-## Looking for .com URLs with "price" parameter and the word "product" in the title (retrieving 2 Google result pages). ##
-`python blueslide.py --site .com --intitle product --inurl ?price= 2`
+## Looking for mi.domain URLs with "price" parameter and the word "product" in the title (retrieving 2 Google result pages). ##
+`python blueslide.py --site mi.domain --intitle product --inurl ?price= 2`
 
 
 It is recommended not to perform a high number of searches in a short time in order to avoid Google's Captcha mechanism.
