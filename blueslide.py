@@ -8,7 +8,7 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 full = False
 num_page = 1
-coincidences = ["http://gartner.es/it/page.jsp?id=501912"]
+coincidences = []
 path = "log.txt"
 
 class bcolors():
