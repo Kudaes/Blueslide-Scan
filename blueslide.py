@@ -10,6 +10,7 @@ full = False
 num_page = 1
 coincidences = []
 path = "log.txt"
+proxy = {}
 
 class bcolors():
     HEADER = '\033[95m'
@@ -139,13 +140,20 @@ class ActiveScanThread(Process):
         return cleaned.strip() 
     
     def getRawHtml(self,url):
-        r = requests.get(url,verify=False, timeout = 5)
+	if not proxy:
+	    r = requests.get(url,verify=False, timeout = 5)
+	else:
+	    r = requests.get(url,verify=False, timeout = 5, proxies = proxy)
+	    
         return self.clean_html(r.text)   
     
     def getElapsedTime(self,url):
         time = 0.0
         for i in range(5):
-            time += requests.get(url,verify=False,timeout = 20).elapsed.total_seconds()
+	    if not proxy:
+		time += requests.get(url,verify=False,timeout = 20).elapsed.total_seconds()
+	    else:
+		time += requests.get(url,verify=False,timeout = 20, proxies = proxy).elapsed.total_seconds()		
         
         return time / 5
     
@@ -179,8 +187,9 @@ def parseArguments():
     parser.add_argument("--site", help="Domain in which look for.")
     parser.add_argument("--ext", help="Extension to look for.")
     parser.add_argument("--inurl", help="Pattern to look for.")
-    parser.add_argument("--intitle", help="Title to look for")
-    parser.add_argument("--path",help="Log file to store the results.")
+    parser.add_argument("--intitle", help="Title to look for.")
+    parser.add_argument("--path",help="Log file path where to store the results.")
+    parser.add_argument("--proxy",help="Set a proxy for the testing requests (e.g. http://127.0.0.1:8080).")
     parser.add_argument("-f", "--full", action="store_true",help="Force the tool to test all parameters.")    
     parser.add_argument("num_pages", help="Number of Google's pages retrieved.",type=int)
 
@@ -191,7 +200,7 @@ def parseArguments():
 
 def createQuery(args):
 
-    global num_page,full
+    global num_page,full,proxy
 
     query = ""
     if args.site:
@@ -202,6 +211,10 @@ def createQuery(args):
         query += "inurl:" + args.inurl + " "
     if args.intitle:
         query += "intitle:" + '"' + args.intitle + '"'
+    if args.proxy:
+	spl = args.proxy.split(':')
+	proxy[spl[0]] = args.proxy
+	proxyAlert()
     if args.path:
 	path = args.path
     if args.full:
@@ -229,8 +242,9 @@ def printMsg(msg,original):
     
     with open(path,"a") as f:
 	f.write(original + " --> (" + pieces[1] + ").\n")
-	
-    
+	   
+def proxyAlert():
+    print bcolors.WARNING + "Time based injections may throw false positive when using slow proxy." + bcolors.ENDC
     
 def startScan():
     
